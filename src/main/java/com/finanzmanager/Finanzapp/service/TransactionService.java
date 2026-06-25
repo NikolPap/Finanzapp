@@ -24,5 +24,13 @@ public class TransactionService {
         return repository.save(transaction);
     }
 
+    public Transaction getById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    public List<Transaction> searchByTitle(String title) {
+        return repository.findByTitleContainingIgnoreCase(title);
+    }
+
 
 }
