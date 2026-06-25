@@ -5,6 +5,7 @@ import com.finanzmanager.Finanzapp.service.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,27 +21,31 @@ public class TransactionController {
     public ResponseEntity<List<Transaction>> getAllTransactions() {
         List<Transaction> transactions = service.getAll();
         return ResponseEntity.ok(transactions);
-
     }
 
     @PostMapping
-    public Transaction createTransaction(@RequestBody Transaction transaction) {
-        return service.save(transaction);
+    public ResponseEntity<?> createTransaction(@RequestBody Transaction transaction) {
+        if(transaction.getId() != null){
+            return ResponseEntity.badRequest().body("Id muss null sein - Wird automatich generiiert");
+        }
+        Transaction saved = service.save(transaction);
+        return ResponseEntity.created(URI.create(("/api/transaction/" + saved.getId()))).body(saved);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getById(@PathVariable Long id) {
         Transaction transaction = service.getById(id);
         if (transaction != null) {
-            return ResponseEntity.ok(transaction);
+            return ResponseEntity.ok(transaction); //200 ok
         }else  {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); //4ß4
         }
     }
 
     @GetMapping("/search")
-    public List<Transaction> searchByTitle(@RequestParam String title) {
-        return service.searchByTitle(title);
+    public ResponseEntity<List<Transaction>> searchByTitle(@RequestParam String title) {
+        List<Transaction> results = service.searchByTitle(title);
+        return ResponseEntity.ok(results);
     }
 
 }
