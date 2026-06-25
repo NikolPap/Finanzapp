@@ -16,7 +16,6 @@ public class Transaction {
     private Long id;
 
     private String title;
-    private String description;
     private Double amount;
     private LocalDate date;
 
