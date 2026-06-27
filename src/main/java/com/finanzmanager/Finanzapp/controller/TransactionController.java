@@ -2,6 +2,7 @@ package com.finanzmanager.Finanzapp.controller;
 
 import com.finanzmanager.Finanzapp.model.Transaction;
 import com.finanzmanager.Finanzapp.service.TransactionService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,9 @@ import java.util.List;
 @RequestMapping("/api/transaction")
 @SuppressWarnings("java:S4684")
 public class TransactionController {
+
     private final TransactionService service;
+
     public TransactionController(TransactionService service) {
         this.service = service;
     }
@@ -24,8 +27,8 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTransaction(@RequestBody Transaction transaction) {
-        if(transaction.getId() != null){
+    public ResponseEntity<?> createTransaction(@Valid @RequestBody Transaction transaction) {
+        if (transaction.getId() != null) {
             return ResponseEntity.badRequest().body("Id muss null sein - Wird automatich generiiert");
         }
         Transaction saved = service.save(transaction);
@@ -37,7 +40,7 @@ public class TransactionController {
         Transaction transaction = service.getById(id);
         if (transaction != null) {
             return ResponseEntity.ok(transaction); //200 ok
-        }else  {
+        } else  {
             return ResponseEntity.notFound().build(); //4ß4
         }
     }
