@@ -1,6 +1,7 @@
 package com.finanzmanager.Finanzapp.controller;
 
 import com.finanzmanager.Finanzapp.model.Category;
+import com.finanzmanager.Finanzapp.model.CategoryType;
 import com.finanzmanager.Finanzapp.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,18 @@ public class CategoryController {
  @GetMapping("/{id}")
  public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
+ }
+
+ //nach Type
+ @GetMapping("/type/{type}")
+ public List<Category> getCategoryByType(@PathVariable CategoryType type) {
+        return categoryService.getByType(type);
+ }
+
+ //nach Name
+ @GetMapping("/search")
+ public List<Category> searchByKName(@RequestParam String name) {
+        return categoryService.searchByName(name);
  }
 
  //update
