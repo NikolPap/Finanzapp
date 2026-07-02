@@ -1,6 +1,7 @@
 package com.finanzmanager.Finanzapp.service;
 
 import com.finanzmanager.Finanzapp.model.Category;
+import com.finanzmanager.Finanzapp.model.CategoryType;
 import com.finanzmanager.Finanzapp.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,16 @@ public class CategoryService {
     //Read alle
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
+    }
+
+    //get by type
+    public List<Category> getByType(CategoryType type) {
+        return categoryRepository.findByType(type);
+    }
+
+    //search by name
+    public List<Category> searchByName(String keyword) {
+        return categoryRepository.searchByName(keyword);
     }
 
     //read nach Id
